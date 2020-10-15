@@ -5,11 +5,15 @@ using UnityEngine;
 public class JougiController : MonoBehaviour
 {
     [SerializeField] private GameObject jougiObj;
+    private GameObject mConObj;
+    private MouseController mConScript;
     private Rigidbody rb;
 
     // Start is called before the first frame update
     void Start()
     {
+        mConObj = GameObject.Find("MouseManager");
+        mConScript = mConObj.GetComponent<MouseController>();
         if(jougiObj != null)
         {
             rb = jougiObj.GetComponent<Rigidbody>();
@@ -19,10 +23,14 @@ public class JougiController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (mConScript.GetClickFlg())
         {
-            Vector3 force = new Vector3(100.0f, 0.0f, 0.0f);
-            rb.AddForce(force);
+            if (mConScript.GetHitJougiObj().name == gameObject.name)
+            {
+                mConScript.SetClickFlg(false);
+                Vector3 force = mConScript.GetPushCompetence();
+                rb.AddForce(force);
+            }
         }
     }
 }
