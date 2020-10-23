@@ -545,6 +545,7 @@ MonoBehaviour:
   clickMousePos: {x: 0, y: 0, z: 0}
   releaseMousePos: {x: 0, y: 0, z: 0}
   pushCompetence: {x: 0, y: 0, z: 0}
+  releaseVec: {x: 0, y: 0, z: 0}
   roundMaxRank: 1000
   pushPower: 100
   isClickFlg: 0
@@ -771,6 +772,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 339047371935677105, guid: bb2e36595d54e674fa8b8ac6a0902c1c,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb2e36595d54e674fa8b8ac6a0902c1c, type: 3}

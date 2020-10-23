@@ -8,10 +8,12 @@ public class MouseController : MonoBehaviour
     [SerializeField] private Vector3 clickMousePos;         //クリックした瞬間の座標
     [SerializeField] private Vector3 releaseMousePos;       //離した瞬間の座標
     [SerializeField] private Vector3 pushCompetence;        //オブジェクトを押す力
+    [SerializeField] private Vector3 releaseVec;            
 
     [SerializeField] private int roundMaxRank = 1000;       //四捨五入の範囲
     [SerializeField] private int pushPower;                 //力加減
     [SerializeField] private bool isClickFlg;               //クリックフラグ
+
     Camera mainCamera;
     // Start is called before the first frame update
     void Start()
@@ -47,6 +49,11 @@ public class MouseController : MonoBehaviour
     //マウスの右ボタンをクリックしたら座標とクリックしたオブジェクトを取得
     void MouseDownRayCast(Ray ray, RaycastHit hit)
     {
+        if(hitJougiObj != null)
+        {
+            hitJougiObj = null;
+        }
+
         if (Physics.Raycast(ray, out hit))
         {
             GameObject hitObj = hit.collider.gameObject;
@@ -74,10 +81,12 @@ public class MouseController : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             GameObject hitObj = hit.collider.gameObject;
-            if (hitObj != null)
+            if (hitObj != null && hitJougiObj != null)
             {
                 //クリックして離した座標取得(roundMaxRankの値によって精密さが変わる) 
                 var val = hit.point * roundMaxRank;
+                releaseVec = hit.point;
+
                 releaseMousePos.x = Mathf.Round(val.x);
                 releaseMousePos.y = Mathf.Round(val.y);
                 releaseMousePos.z = Mathf.Round(val.z);
@@ -94,7 +103,8 @@ public class MouseController : MonoBehaviour
     //Getter
     public GameObject GetHitJougiObj()
     {
-        return hitJougiObj;
+        if (hitJougiObj != null) return hitJougiObj;
+        else return null;
     }
 
     public Vector3 GetPushCompetence()
@@ -107,6 +117,10 @@ public class MouseController : MonoBehaviour
         return isClickFlg;
     }
 
+    public Vector3 GetMouseRelease()
+    {
+        return releaseVec;
+    }
     //Setter
     public void SetClickFlg(bool flag)
     {
