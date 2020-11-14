@@ -9,13 +9,18 @@ public class GameMainController : MonoBehaviour
     [SerializeField] private int reqeatedCountMax;
     [SerializeField] private int reqeatedTimeLimit;
 
-    private GameObject mouseManagerObj;    
+    private GameObject mouseManagerObj;
+    private GameObject sceneManagerObj;
+
     private MouseController mConScript;
+    private SceneMana sceneManager;
 
     private bool isReqeated;            //連打フラグ
     private bool isReturn;              //復帰可能フラグ
     private int reqeatedCount;          //連打カウント    
     private float reqeatedTime;         //時間
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +28,10 @@ public class GameMainController : MonoBehaviour
         playersObjList = GameObject.FindGameObjectsWithTag("jougi");
         mouseManagerObj = GameObject.Find("MouseManager");
 
-       for(int i = 0; i < playersObjList.Length; i++)
+        sceneManagerObj = GameObject.Find("SceneManager");
+        sceneManager = sceneManagerObj.GetComponent<SceneMana>();
+
+       for (int i = 0; i < playersObjList.Length; i++)
         {
             jConScripts.Add(playersObjList[i].GetComponent<JougiController>());
         }
@@ -55,8 +63,9 @@ public class GameMainController : MonoBehaviour
                     {
                         Debug.Log("失敗");
                         isReqeated = false;
-                        Destroy(playersObjList[i]);
                         reqeatedTime = 0.0f;
+                        sceneManager.isScene = true;
+                        Destroy(playersObjList[i]);
                     }
                 }
             }
