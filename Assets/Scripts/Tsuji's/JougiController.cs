@@ -123,6 +123,10 @@ public class JougiController : MonoBehaviour
             Mathf.Abs(angle) < LinePushAngle * rotatePow)
         {
             torque = Vector3.zero;
+
+            force.x *= mConScript.GetPushPower();
+            force.y *= mConScript.GetPushPower();
+            force.z *= mConScript.GetPushPower();
         }
         //マウスを離した位置と中心点の距離ベクトル&定規の右向きベクトルとの角度が
         //＋かーかで回転方向を決める

@@ -16,6 +16,8 @@ public class MouseController : MonoBehaviour
     [SerializeField] private bool isClickFlg;               //クリックフラグ
 
     Camera mainCamera;
+
+    private Vector3 mouseMoveDistance;                          //マウスの移動距離
     // Start is called before the first frame update
     void Start()
     {
@@ -94,6 +96,7 @@ public class MouseController : MonoBehaviour
                 releaseMousePos = releaseMousePos / roundMaxRank;
                 //移動量を計算する。
                 pushCompetence = clickMousePos - releaseMousePos;
+                mouseMoveDistance = pushCompetence;
                 pushCompetence *= pushPower;
 
             }
@@ -135,6 +138,11 @@ public class MouseController : MonoBehaviour
         return pushPower;
     }
 
+    //マウスの移動距離
+    public Vector3 GetMouseMoveDistance()
+    {
+        return mouseMoveDistance;
+    }
     //Setter
     public void SetClickFlg(bool flag)
     {
