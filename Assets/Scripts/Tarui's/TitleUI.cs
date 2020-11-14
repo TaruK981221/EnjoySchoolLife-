@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using KanKikuchi.AudioManager;
 
 public class TitleUI : MonoBehaviour
 {
@@ -48,6 +49,8 @@ public class TitleUI : MonoBehaviour
                 {
                     cAnim.SetBool("Cursor", true);
                 }
+
+                SEManager.Instance.Play(SEPath.CANCEL2);
             }
         }
     }
@@ -60,11 +63,13 @@ public class TitleUI : MonoBehaviour
             if (cAnim.GetBool("Cursor"))
             {
                 scene.isEnd = true;
+                SEManager.Instance.Play(SEPath.DECISION);
             }
             // ゲーム開始
             else
             {
                 scene.isScene = true;
+                SEManager.Instance.Play(SEPath.DECISION);
             }
         }
     }
