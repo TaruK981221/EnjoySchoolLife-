@@ -8,7 +8,8 @@ public class MouseController : MonoBehaviour
     [SerializeField] private Vector3 clickMousePos;         //クリックした瞬間の座標
     [SerializeField] private Vector3 releaseMousePos;       //離した瞬間の座標
     [SerializeField] private Vector3 pushCompetence;        //オブジェクトを押す力
-    [SerializeField] private Vector3 releaseVec;            
+
+    [SerializeField] private float releasePosMisalignment;  //クリックした座標のズレ
 
     [SerializeField] private int roundMaxRank = 1000;       //四捨五入の範囲
     [SerializeField] private int pushPower;                 //力加減
@@ -85,7 +86,6 @@ public class MouseController : MonoBehaviour
             {
                 //クリックして離した座標取得(roundMaxRankの値によって精密さが変わる) 
                 var val = hit.point * roundMaxRank;
-                releaseVec = hit.point;
 
                 releaseMousePos.x = Mathf.Round(val.x);
                 releaseMousePos.y = Mathf.Round(val.y);
@@ -94,11 +94,14 @@ public class MouseController : MonoBehaviour
                 releaseMousePos = releaseMousePos / roundMaxRank;
                 //移動量を計算する。
                 pushCompetence = clickMousePos - releaseMousePos;
-                pushCompetence.y = 0.0f;
                 pushCompetence *= pushPower;
+
             }
+
+            
         }
     }
+
 
     //Getter
     public GameObject GetHitJougiObj()
@@ -112,15 +115,26 @@ public class MouseController : MonoBehaviour
         return pushCompetence;
     }
 
+    public Vector3 GetMouseRelease()
+    {
+        return releaseMousePos;
+    }
+
     public bool GetClickFlg()
     {
         return isClickFlg;
     }
 
-    public Vector3 GetMouseRelease()
+    public float GetReleasePosMisalignment()
     {
-        return releaseVec;
+        return releasePosMisalignment;
     }
+
+    public float GetPushPower()
+    {
+        return pushPower;
+    }
+
     //Setter
     public void SetClickFlg(bool flag)
     {

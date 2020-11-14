@@ -261,7 +261,7 @@ Transform:
   m_Children:
   - {fileID: 1316657384}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &286064171
 PrefabInstance:
@@ -432,7 +432,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &963194225
 GameObject:
@@ -515,7 +515,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &1026667601
 GameObject:
@@ -550,9 +550,9 @@ MonoBehaviour:
   clickMousePos: {x: 0, y: 0, z: 0}
   releaseMousePos: {x: 0, y: 0, z: 0}
   pushCompetence: {x: 0, y: 0, z: 0}
-  releaseVec: {x: 0, y: 0, z: 0}
+  releasePosMisalignment: 0.5
   roundMaxRank: 1000
-  pushPower: 100
+  pushPower: 1
   isClickFlg: 0
 --- !u!4 &1026667603
 Transform:
@@ -566,7 +566,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1316657383
 GameObject:
@@ -691,7 +691,7 @@ Transform:
   m_Children:
   - {fileID: 10044948}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1352145315
 MonoBehaviour:
