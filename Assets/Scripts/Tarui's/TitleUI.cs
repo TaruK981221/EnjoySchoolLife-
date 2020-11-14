@@ -46,8 +46,8 @@ public class TitleUI : MonoBehaviour
 
     void Cursor()
     {
-        if (Input.GetKeyDown(KeyCode.DownArrow) ||
-            Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.DownArrow) ||
+            Input.GetKey(KeyCode.UpArrow))
         {
             if (!isCursorMove)
             {
