@@ -6,26 +6,56 @@ public class TitleUI : MonoBehaviour
 {
     Transform cursor;
     Animator cAnim = null;
+
+    SceneMana scene;
     
     void Awake()
     {
         cursor = GameObject.Find("Cursor").transform;
         cAnim = cursor.GetComponent<Animator>();
+        scene = GameObject.Find("SceneManager").GetComponent<SceneMana>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(Input.GetKeyDown(KeyCode.DownArrow) ||
+        Cursor();
+
+        Transition();
+    }
+
+    void Cursor()
+    {
+        if (Input.GetKeyDown(KeyCode.DownArrow) ||
             Input.GetKeyDown(KeyCode.UpArrow))
         {
-            if(cAnim.GetBool("Cursor"))
+            if (cAnim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
             {
-                cAnim.SetBool("Cursor", false);
+                if (cAnim.GetBool("Cursor"))
+                {
+                    cAnim.SetBool("Cursor", false);
+                }
+                else
+                {
+                    cAnim.SetBool("Cursor", true);
+                }
             }
+        }
+    }
+
+    void Transition()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            // ゲーム終了
+            if (cAnim.GetBool("Cursor"))
+            {
+                scene.isEnd = true;
+            }
+            // ゲーム開始
             else
             {
-                cAnim.SetBool("Cursor", true);
+                scene.isScene = true;
             }
         }
     }

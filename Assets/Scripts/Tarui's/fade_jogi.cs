@@ -21,6 +21,13 @@ public class fade_jogi : MonoBehaviour
     Vector3 endOut = Vector3.zero;
 
     bool FadeStart = false;
+    public bool fadeStart
+    {
+        get
+        {
+            return FadeStart;
+        }
+    }
 
     Transform child;
 
