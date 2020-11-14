@@ -10,19 +10,30 @@ public class MouseController : MonoBehaviour
     [SerializeField] private Vector3 pushCompetence;        //オブジェクトを押す力
 
     [SerializeField] private float releasePosMisalignment;  //クリックした座標のズレ
+    [SerializeField] private int   roundMaxRank = 1000;     //四捨五入の範囲
+    [SerializeField] private int   pushPower;               //力加減
+    [SerializeField] private bool  isClickFlg;              //クリックフラグ
 
-    [SerializeField] private int roundMaxRank = 1000;       //四捨五入の範囲
-    [SerializeField] private int pushPower;                 //力加減
-    [SerializeField] private bool isClickFlg;               //クリックフラグ
+    private Camera mainCamera;
+    private Vector3 mouseMoveDistance;                      //マウスの移動距離
+    private float clickingTime;
+    private float tempTime;
 
-    Camera mainCamera;
+    private GameObject gameMainManager;
+    private GameMainController gmConScript;
 
-    private Vector3 mouseMoveDistance;                          //マウスの移動距離
+    private int reqeatedCount;
     // Start is called before the first frame update
     void Start()
     {
+        gameMainManager = GameObject.Find("GameMainManager");
+        gmConScript = gameMainManager.GetComponent<GameMainController>();
+
         mainCamera = Camera.main;
         isClickFlg = false;
+        clickingTime = 0.0f;
+        tempTime = 0.0f;
+        reqeatedCount = 0;
     }
 
     // Update is called once per frame
@@ -38,6 +49,17 @@ public class MouseController : MonoBehaviour
         {
             RaycastHit hit = new RaycastHit();
             MouseDownRayCast(pointRay, hit);
+            //連打可能ならば
+            if (gmConScript.GetIsReqeated())
+            {
+                reqeatedCount++;
+                gmConScript.SetReqetedCount(reqeatedCount);
+            }
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            tempTime += (pushPower * 0.1f);
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -45,6 +67,8 @@ public class MouseController : MonoBehaviour
             RaycastHit hit = new RaycastHit();
             MouseUpRayCast(pointRay, hit);
             isClickFlg = true;
+            clickingTime = tempTime;
+            tempTime = 0.0f;
         }
         Debug.DrawRay(pointRay.origin, pointRay.direction * 1000f);
     }
@@ -98,10 +122,7 @@ public class MouseController : MonoBehaviour
                 pushCompetence = clickMousePos - releaseMousePos;
                 mouseMoveDistance = pushCompetence;
                 pushCompetence *= pushPower;
-
             }
-
-            
         }
     }
 
@@ -118,7 +139,7 @@ public class MouseController : MonoBehaviour
         return pushCompetence;
     }
 
-    public Vector3 GetMouseRelease()
+    public Vector3 GetReleaseMousePos()
     {
         return releaseMousePos;
     }
@@ -138,6 +159,10 @@ public class MouseController : MonoBehaviour
         return pushPower;
     }
 
+    public float GetClickingTime()
+    {
+        return clickingTime;
+    }
     //マウスの移動距離
     public Vector3 GetMouseMoveDistance()
     {
