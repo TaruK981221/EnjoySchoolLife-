@@ -50,8 +50,9 @@ MonoBehaviour:
   torque: {x: 0, y: 0, z: 0}
   rotatePow: 0
   jumpPow: 0
+  jumpMax: 0
   straightPushAngle: 0
-  LinePushAngle: 0
+  linePushAngle: 0
 --- !u!1001 &9168822011227324222
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -63,6 +64,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ruler
+      objectReference: {fileID: 0}
+    - target: {fileID: 2986821914885790795, guid: b3c8b5393c2993340bbbc586912c41f3,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.059999995
+      objectReference: {fileID: 0}
+    - target: {fileID: 2986821914885790795, guid: b3c8b5393c2993340bbbc586912c41f3,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.013409956
+      objectReference: {fileID: 0}
+    - target: {fileID: 2986821914885790795, guid: b3c8b5393c2993340bbbc586912c41f3,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 0.0045001977
+      objectReference: {fileID: 0}
+    - target: {fileID: 2986821914885790795, guid: b3c8b5393c2993340bbbc586912c41f3,
+        type: 3}
+      propertyPath: m_Center.z
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3297491905898292354, guid: b3c8b5393c2993340bbbc586912c41f3,
         type: 3}
@@ -118,6 +139,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5418098812620087663, guid: b3c8b5393c2993340bbbc586912c41f3,
+        type: 3}
+      propertyPath: m_Mass
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b3c8b5393c2993340bbbc586912c41f3, type: 3}
