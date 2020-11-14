@@ -18,14 +18,18 @@ public class JougiController : MonoBehaviour
     [SerializeField] private int rotatePow;
 
     [SerializeField] private float jumpPow;
+    [SerializeField] private float jumpMax;
     [SerializeField] private float straightPushAngle;
-    [SerializeField] private float LinePushAngle;
+    [SerializeField] private float linePushAngle;
 
     private GameObject mConObj;
     private MouseController mConScript;
     private Rigidbody rb;
+    private Vector3 playerPos;
 
     private bool  isJump;
+    private bool  isRotate;
+    private bool  isLife;
     private float posY;
 
     // Start is called before the first frame update
@@ -39,9 +43,8 @@ public class JougiController : MonoBehaviour
         }
 
         JougiInit();
-
-        isJump = false;
         posY = jougiObj.transform.localPosition.y;
+        playerPos = jougiObj.transform.localPosition;
     }
     // Update is called once per frame
     void Update()
@@ -53,6 +56,7 @@ public class JougiController : MonoBehaviour
             if (mConScript.GetHitJougiObj().name == gameObject.name)
             {
                 mConScript.SetClickFlg(false);
+                //力加減取得
                 force = mConScript.GetPushCompetence();
                 torque = Vector3.zero;
 
@@ -65,10 +69,12 @@ public class JougiController : MonoBehaviour
                     isJump = false;
                 }
 
+                //ジャンプ中でなければ
                 if (!isJump)
                 {
                     //クリックした座標とのズレを判定。misalignmentよりも小さい値であれば
                     //その場でクリックした判定とし、力を上に加える
+
                     if (Mathf.Abs(rmPos.x) < misalignment && Mathf.Abs(rmPos.z) < misalignment)
                     {
                         //縦の力を計算
@@ -83,9 +89,9 @@ public class JougiController : MonoBehaviour
                     rb.AddTorque(torque, ForceMode.Impulse);
                     rb.AddForce(force, ForceMode.Impulse);
                 }
-               
             }
         }
+        JougiDestroy();
     }
 
     //初期化
@@ -93,19 +99,41 @@ public class JougiController : MonoBehaviour
     {
         if (jumpPow == 0.0f) jumpPow = 5.0f;
         if (straightPushAngle == 0.0f) straightPushAngle = 80.0f;
-        if (LinePushAngle == 0.0f) LinePushAngle = 20.0f;
+        if (linePushAngle == 0.0f) linePushAngle = 20.0f;
+
+
+        isJump = false;
+        isRotate = false;
+        isLife = true;
+
+        force = Vector3.zero;
+        torque = Vector3.zero;
     }
 
     //普通？の定規を横に動かす
     private void JougiMoveSide()
     {
+        //計算前にモデルが反転していた場合、計算結果を反転させる必要がある
+        if (transform.up != jougiObj.transform.up)
+        {
+            isRotate = true;
+            Debug.Log("裏");
+            Debug.Log(jougiObj.transform.right);
+        }
+        else
+        {
+            isRotate = false;
+            Debug.Log("表");
+            Debug.Log(jougiObj.transform.right);
+        }
+
         //重心を求める
         var centar = jougiObj.transform.localPosition;
         //軸を求める(定規の正面と合わせてね)
         var axisForward = jougiObj.transform.forward;
         var axisRight = jougiObj.transform.right;
         //マウスの移動距離取得
-        var release = mConScript.GetMouseRelease();
+        var release = mConScript.GetReleaseMousePos();
         var distance = centar - release;        
 
         //二つのベクトルのなす角度を求める
@@ -120,7 +148,7 @@ public class JougiController : MonoBehaviour
         angle *= rotatePow;
         //一定の角度以上になると真っ直ぐ飛ばすようにする
         if (Mathf.Abs(angle) > straightPushAngle * rotatePow ||
-            Mathf.Abs(angle) < LinePushAngle * rotatePow)
+            Mathf.Abs(angle) < linePushAngle * rotatePow)
         {
             torque = Vector3.zero;
 
@@ -132,11 +160,17 @@ public class JougiController : MonoBehaviour
         //＋かーかで回転方向を決める
         else if (angle2 > 0)
         {
-            torque = new Vector3(0.0f, angle, 0.0f);
+            if (isRotate)
+                torque = new Vector3(0.0f, angle, 0.0f);
+            else
+                torque = new Vector3(0.0f, -angle, 0.0f);
         }
         else
         {
-            torque = new Vector3(0.0f, -angle, 0.0f);
+            if (isRotate)
+                torque = new Vector3(0.0f, -angle, 0.0f);
+            else
+                torque = new Vector3(0.0f, angle, 0.0f);
         }
 
     }
@@ -144,12 +178,45 @@ public class JougiController : MonoBehaviour
     //上に動かす
     private void JougiJump()
     {
+        var releasePos = mConScript.GetReleaseMousePos();
+        var releaseTime = mConScript.GetClickingTime();
         //上に飛ばす
         isJump = true;
-        force = new Vector3(0.0f, mConScript.GetPushPower() * jumpPow, 0.0f);
+        if (releaseTime > jumpMax)
+            releaseTime = jumpMax;
+
+            force  = new Vector3(0.0f, releaseTime * (jumpPow * 0.1f), 0.0f);
 
         //縦回転
-        torque = new Vector3(30.0f, 0.0f, 0.0f);
+        if (jougiObj.transform.position.z < releasePos.z)
+            torque = new Vector3(releaseTime, 0.0f, 0.0f);
+        else
+            torque = new Vector3(-releaseTime, 0.0f, 0.0f);
+          
+    }
 
+    //死亡判定
+    private void JougiDestroy()
+    {
+        if(jougiObj.transform.position.y <= -10.0f)
+        {
+            isLife = false;
+            Debug.Log(name + "死亡");
+        }
+    }
+
+    //生存フラグを取得
+    public bool GetLife()
+    {
+        return isLife;
+    }
+
+    public void ReturnJougi()
+    {
+        isLife = true;
+        isJump = false;
+        isRotate = false;
+        JougiInit();
+        jougiObj.transform.position = playerPos;
     }
 }
