@@ -12,6 +12,13 @@ public class TitleUI : MonoBehaviour
 
     RectTransform rect = null;
     bool isRect = true;
+
+    bool isCursor = false;
+    bool isCursorMove = false;
+
+    float MoveTime = 0.0f;
+
+    Vector3 pos;
     
     void Awake()
     {
@@ -24,12 +31,15 @@ public class TitleUI : MonoBehaviour
     private void Start()
     {
         StartCoroutine("Scale");
+        pos = rect.localPosition;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
         Cursor();
+
+        CursorMove();
 
         Transition();
     }
@@ -39,18 +49,35 @@ public class TitleUI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.DownArrow) ||
             Input.GetKeyDown(KeyCode.UpArrow))
         {
-            if (cAnim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+            if (!isCursorMove)
             {
-                if (cAnim.GetBool("Cursor"))
-                {
-                    cAnim.SetBool("Cursor", false);
-                }
-                else
-                {
-                    cAnim.SetBool("Cursor", true);
-                }
+                isCursorMove = true;
+                isCursor = !isCursor;
 
                 SEManager.Instance.Play(SEPath.CANCEL2);
+            }
+        }
+    }
+
+    void CursorMove()
+    {
+        if(isCursorMove)
+        {
+            MoveTime += Time.deltaTime;
+
+            if (!isCursor)
+            {
+                rect.localPosition = Vector3.Lerp((pos - new Vector3(0, 150.0f)), pos, MoveTime / 0.5f);
+            }
+            else
+            {
+                rect.localPosition = Vector3.Lerp(pos, (pos - new Vector3(0, 150.0f)), MoveTime / 0.5f);
+            }
+
+            if (MoveTime >= 0.5f)
+            {
+                MoveTime = 0.0f;
+                isCursorMove = false;
             }
         }
     }
@@ -60,7 +87,7 @@ public class TitleUI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return))
         {
             // ゲーム終了
-            if (cAnim.GetBool("Cursor"))
+            if (isCursor)
             {
                 scene.isEnd = true;
                 SEManager.Instance.Play(SEPath.DECISION);
