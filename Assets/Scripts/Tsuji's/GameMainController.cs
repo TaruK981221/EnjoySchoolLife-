@@ -36,23 +36,27 @@ public class GameMainController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        reqeatedTime += Time.deltaTime;
         for(int i = 0; i < playersObjList.Length; i++)
         {
             //死んでるプレイヤーがいたら
             if (!jConScripts[i].GetLife())
             {
-                //連打開始
-                isReqeated = true;
-                if(reqeatedTime < reqeatedTimeLimit)
+                if(playersObjList[i] != null)
                 {
-                    //連打!!!
-                    ReqeatedHits(playersObjList[i], jConScripts[i]);
-                }
-                else if(!isReturn)
-                { 
-                    Debug.Log("失敗");
-                    Destroy(playersObjList[i]);
+                    //連打開始
+                    isReqeated = true;
+                    reqeatedTime += Time.deltaTime;
+                    if (reqeatedTime < reqeatedTimeLimit)
+                    {
+                        //連打!!!
+                        ReqeatedHits(playersObjList[i], jConScripts[i]);
+                    }
+                    else if (!isReturn)
+                    {
+                        Debug.Log("失敗");
+                        Destroy(playersObjList[i]);
+                        reqeatedTime = 0.0f;
+                    }
                 }
             }
         }
@@ -64,7 +68,7 @@ public class GameMainController : MonoBehaviour
         if(reqeatedCount >= reqeatedCountMax)
         {
             isReturn = true;
-            Debug.Log("復帰");
+            Debug.Log(pName +"復帰");
             jcon.ReturnJougi();
         }
     }
