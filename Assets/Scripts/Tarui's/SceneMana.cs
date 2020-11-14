@@ -34,10 +34,12 @@ public class SceneMana : MonoBehaviour
         }
     }
 
+    fade_jogi fade = null;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        fade = this.transform.GetComponentInChildren<fade_jogi>();
     }
 
     // Update is called once per frame
@@ -51,6 +53,12 @@ public class SceneMana : MonoBehaviour
     void Transition()
     {
         if (isScene)
+        {
+            fade.isFadeOut = true;
+            isScene = false;
+        }
+
+        if (fade.isFadeEnd == true)
         {
             SceneManager.LoadScene(SceneName);
         }
