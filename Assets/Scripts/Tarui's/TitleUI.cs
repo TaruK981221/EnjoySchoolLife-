@@ -8,12 +8,21 @@ public class TitleUI : MonoBehaviour
     Animator cAnim = null;
 
     SceneMana scene;
+
+    RectTransform rect = null;
+    bool isRect = true;
     
     void Awake()
     {
         cursor = GameObject.Find("Cursor").transform;
         cAnim = cursor.GetComponent<Animator>();
         scene = GameObject.Find("SceneManager").GetComponent<SceneMana>();
+        rect = cursor.GetComponent<RectTransform>();
+    }
+
+    private void Start()
+    {
+        StartCoroutine("Scale");
     }
 
     // Update is called once per frame
@@ -57,6 +66,25 @@ public class TitleUI : MonoBehaviour
             {
                 scene.isScene = true;
             }
+        }
+    }
+
+    IEnumerator Scale()
+    {
+        while (true)
+        {
+            if (isRect)
+            {
+                rect.sizeDelta *= 1.2f;
+                isRect = false;
+            }
+            else
+            {
+                rect.sizeDelta /= 1.2f;
+                isRect = true;
+            }
+
+            yield return new WaitForSeconds(1.0f);
         }
     }
 }

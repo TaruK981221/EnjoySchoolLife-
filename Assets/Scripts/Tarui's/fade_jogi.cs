@@ -6,6 +6,28 @@ public class fade_jogi : MonoBehaviour
 {
     [SerializeField]
     bool FadeIn = false, FadeOut = false;
+    public bool isFadeIn
+    {
+        set
+        {
+            FadeIn = value;
+        }
+        get
+        {
+            return FadeIn;
+        }
+    }
+    public bool isFadeOut
+    {
+        set
+        {
+            FadeOut = value;
+        }
+        get
+        {
+            return FadeOut;
+        }
+    }
 
     [SerializeField,Header("フェードしている間の時間")]
     float FadeTime = 1.0f;
@@ -21,11 +43,12 @@ public class fade_jogi : MonoBehaviour
     Vector3 endOut = Vector3.zero;
 
     bool FadeStart = false;
-    public bool fadeStart
+    bool FadeEnd = false;
+    public bool isFadeEnd
     {
         get
         {
-            return FadeStart;
+            return FadeEnd;
         }
     }
 
@@ -43,8 +66,9 @@ public class fade_jogi : MonoBehaviour
         if (!FadeStart && (FadeIn || FadeOut))
         {
             FadeStart = !FadeStart;
+            FadeEnd = false;
 
-            if(FadeIn)
+            if (FadeIn)
             {
                 child.position = startIn;
             }
@@ -71,6 +95,7 @@ public class fade_jogi : MonoBehaviour
                 elapsedTime = 0.0f;
 
                 FadeStart = !FadeStart;
+                FadeEnd = true;
             }
         }
 
@@ -90,6 +115,7 @@ public class fade_jogi : MonoBehaviour
                 elapsedTime = 0.0f;
 
                 FadeStart = !FadeStart;
+                FadeEnd = true;
             }
         }
     }
