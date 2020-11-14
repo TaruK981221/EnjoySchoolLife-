@@ -54,6 +54,7 @@ public class GameMainController : MonoBehaviour
                     else if (!isReturn)
                     {
                         Debug.Log("失敗");
+                        isReqeated = false;
                         Destroy(playersObjList[i]);
                         reqeatedTime = 0.0f;
                     }
@@ -68,6 +69,8 @@ public class GameMainController : MonoBehaviour
         if(reqeatedCount >= reqeatedCountMax)
         {
             isReturn = true;
+            isReqeated = false;
+            reqeatedCount = 0;
             Debug.Log(pName +"復帰");
             jcon.ReturnJougi();
         }

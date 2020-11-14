@@ -43,8 +43,12 @@ public class MouseController : MonoBehaviour
         screenPos.x = Mathf.Clamp(screenPos.x, 0.0f, Screen.width);
         screenPos.y = Mathf.Clamp(screenPos.y, 0.0f, Screen.height);
 
-        Ray pointRay = mainCamera.ScreenPointToRay(screenPos);
+        if (!gmConScript.GetIsReqeated())
+        {
+            reqeatedCount = 0;
+        }
 
+        Ray pointRay = mainCamera.ScreenPointToRay(screenPos);
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit = new RaycastHit();
