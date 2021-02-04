@@ -33,7 +33,7 @@ public class ArrowUI : MonoBehaviour
 			Vector2 dif = new Vector2(_preMousePos.x - Input.mousePosition.x, _preMousePos.y - Input.mousePosition.y);
 			Vector2 dif2 = new Vector2(_preMousePos.x - Input.mousePosition.x, _preMousePos.y - Input.mousePosition.y);
 			Vector3 dif3 = new Vector3(_preMousePos.x + Input.mousePosition.x, _preMousePos.y + Input.mousePosition.y, 0.0f);
-			trans.localScale = new Vector3(1.0f, Mathf.Sqrt(dif2.x * dif2.x + dif2.y * dif2.y) * 0.015f, 1.0f);
+			trans.localScale = new Vector3(0.5f, Mathf.Sqrt(dif2.x * dif2.x + dif2.y * dif2.y) * 0.015f, 0.5f);
 			trans.eulerAngles= newRot;
 
 			trans.position = dif3 * 0.5f;
