@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using KanKikuchi.AudioManager;
 
 public class JougiController : MonoBehaviour
 {
+
     private enum JougiType
     {
         Default,
@@ -55,6 +57,7 @@ public class JougiController : MonoBehaviour
             //クリックしたオブジェクトと自身のオブジェクトの名前が同じであれば(時機判定)
             if (mConScript.GetHitJougiObj().name == gameObject.name)
             {
+                SEManager.Instance.Play(SEPath.HAGIKU);
                 mConScript.SetClickFlg(false);
                 //力加減取得
                 force = mConScript.GetPushCompetence();
